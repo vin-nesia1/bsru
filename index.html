@@ -3,9 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Generator - Professional Multi-Language QR Code Generator</title>
+  <title>VIN NESIA - Professional Multi-Language QR Code Generator</title>
+  <meta name="description" content="Create high-quality QR codes instantly with VIN NESIA's professional multi-language platform. Fast, secure, and completely free QR code generator.">
+  <meta name="keywords" content="QR code generator, free QR codes, multi-language, professional, VIN NESIA">
+  <meta name="author" content="VIN NESIA">
+  <meta property="og:title" content="VIN NESIA - Professional QR Code Generator">
+  <meta property="og:description" content="Create high-quality QR codes instantly with our professional multi-language platform">
+  <meta property="og:image" content="https://QR.vinnesia.my.id/logo.png">
+  <meta property="og:url" content="https://QR.vinnesia.my.id">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="canonical" href="https://QR.vinnesia.my.id">
   <style>
-    /* ===== CSS All-in-One ===== */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,59 +22,23 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    :root {
-      --primary-color: #2563eb;
-      --primary-hover: #1d4ed8;
-      --secondary-color: #f8fafc;
-      --accent-color: #10b981;
-      --text-dark: #1f2937;
-      --text-light: #6b7280;
-      --border-color: #e5e7eb;
-      --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      --shadow-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-
     body {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1625 25%, #2d1b3d 50%, #1e1b2e 75%, #0f0f23 100%);
       min-height: 100vh;
-      color: var(--text-dark);
+      color: #ffffff;
       line-height: 1.6;
-      overflow-x: hidden;
     }
 
-    /* Animated background particles */
-    .bg-particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      opacity: 0.1;
-    }
-
-    .particle {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: float 20s infinite ease-in-out;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-      50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
-    }
-
+    /* Header */
     header {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
+      background: rgba(15, 15, 35, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #8b5cf6;
       padding: 1.5rem 0;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
     .header-content {
@@ -84,97 +57,114 @@
     }
 
     .logo-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #10b981, #059669);
+      width: 50px;
+      height: 50px;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-      box-shadow: var(--shadow);
+      object-fit: contain;
+      background: #1e1b2e;
+      padding: 5px;
+      border: 2px solid #8b5cf6;
     }
 
     .logo-text {
       font-size: 2rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #ffffff, #e5e7eb);
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
+    /* Main Content */
     main {
       max-width: 1200px;
-      margin: 4rem auto;
-      padding: 0 2rem;
+      margin: 0 auto;
+      padding: 2rem;
     }
 
     .hero-section {
       text-align: center;
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
     }
 
     .hero-title {
-      font-size: 3.5rem;
+      font-size: 2.5rem;
       font-weight: 800;
-      color: white;
-      margin-bottom: 1.5rem;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      animation: slideInUp 1s ease-out;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      text-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);
     }
 
     .hero-subtitle {
-      font-size: 1.25rem;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 3rem;
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      margin-bottom: 2rem;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
-      animation: slideInUp 1s ease-out 0.2s both;
     }
 
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .language-grid {
+    /* Stats Section */
+    .stats-section {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin: 3rem 0;
-      max-width: 1000px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+      max-width: 600px;
       margin-left: auto;
       margin-right: auto;
     }
 
-    .language-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      padding: 1.5rem 1rem;
+    .stat-card {
+      background: rgba(30, 27, 46, 0.8);
+      border: 2px solid #8b5cf6;
+      border-radius: 12px;
+      padding: 1.5rem;
       text-align: center;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #8b5cf6;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    /* Language Grid */
+    .language-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+
+    .language-card {
+      background: rgba(30, 27, 46, 0.9);
+      border: 2px solid #8b5cf6;
+      border-radius: 15px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
       position: relative;
       overflow: hidden;
-      animation: slideInUp 1s ease-out calc(var(--delay) * 0.1s) both;
     }
 
     .language-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: var(--shadow-hover);
-      border-color: var(--primary-color);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+      border-color: #a855f7;
     }
 
     .language-card::before {
@@ -184,7 +174,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
       transition: left 0.5s ease-in-out;
     }
 
@@ -193,97 +183,75 @@
     }
 
     .flag-icon {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
+      font-size: 3rem;
+      margin-bottom: 1rem;
       display: block;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-10px); }
-      60% { transform: translateY(-5px); }
     }
 
     .language-name {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 0.25rem;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
     }
 
     .language-native {
-      font-size: 0.9rem;
-      color: var(--text-light);
-      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
     }
 
     .language-link {
       display: inline-block;
       text-decoration: none;
-      padding: 0.75rem 1.25rem;
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+      padding: 0.8rem 2rem;
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       color: white;
       border-radius: 25px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .language-link::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s ease-in-out;
-    }
-
-    .language-link:hover::before {
-      left: 100%;
+      border: 1px solid #8b5cf6;
     }
 
     .language-link:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
     }
 
+    /* Features Section */
     .features-section {
-      margin: 5rem 0;
+      margin: 4rem 0;
       text-align: center;
     }
 
     .features-title {
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
-      color: white;
-      margin-bottom: 3rem;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      color: #ffffff;
+      margin-bottom: 2rem;
+      text-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
     }
 
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
     .feature-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(30, 27, 46, 0.8);
+      border: 2px solid rgba(139, 92, 246, 0.3);
       border-radius: 15px;
       padding: 2rem;
-      color: white;
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .feature-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-3px);
+      border-color: #8b5cf6;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
     }
 
     .feature-icon {
@@ -292,130 +260,197 @@
     }
 
     .feature-title {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 600;
       margin-bottom: 1rem;
+      color: #a855f7;
     }
 
     .feature-description {
-      color: rgba(255, 255, 255, 0.8);
+      color: #cbd5e1;
     }
 
+    /* Footer */
     footer {
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(20px);
-      color: rgba(255, 255, 255, 0.8);
-      text-align: center;
-      padding: 2rem;
-      margin-top: 5rem;
+      background: rgba(15, 15, 35, 0.95);
+      border-top: 2px solid #8b5cf6;
+      padding: 3rem 2rem 2rem;
+      margin-top: 4rem;
     }
 
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      color: #a855f7;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul li a {
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section ul li a:hover {
+      color: #8b5cf6;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.3);
+      color: #94a3b8;
+    }
+
+    .footer-bottom p {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Mobile Responsive */
     @media (max-width: 768px) {
       .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
-      
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-      
-      .language-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
-      
-      .language-card {
-        padding: 1.25rem 0.75rem;
-      }
-      
-      main {
-        padding: 0 1rem;
-      }
-    }
 
-    @media (max-width: 480px) {
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
       .language-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
       }
+
+      .language-card {
+        padding: 1.5rem 1rem;
+      }
+
+      .flag-icon {
+        font-size: 2.5rem;
+      }
+
+      .language-name {
+        font-size: 1.1rem;
+      }
+
+      .language-native {
+        font-size: 0.9rem;
+      }
+
+      .language-link {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .stats-section {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+      }
+
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .stat-number {
+        font-size: 1.4rem;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+      }
+
+      main {
+        padding: 1rem;
+      }
     }
 
-    /* Dark mode styles */
-    body.dark-mode {
-      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-    }
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 1.8rem;
+      }
 
-    .dark-toggle {
-      position: fixed;
-      top: 100px;
-      right: 2rem;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      padding: 0.75rem;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-
-    .dark-toggle:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
+      .stats-section {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Background particles -->
-  <div class="bg-particles" id="particles"></div>
-
-  <!-- Dark mode toggle -->
-  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
-
   <header>
     <div class="header-content">
       <div class="logo-container">
-        <div class="logo-icon">QR</div>
-        <div class="logo-text">QR Generator</div>
+        <img src="logo.png" alt="VIN NESIA Logo" class="logo-icon">
+        <div class="logo-text">VIN NESIA</div>
       </div>
     </div>
   </header>
 
   <main>
     <section class="hero-section">
-      <h1 class="hero-title">Professional QR Code Generator</h1>
-      <p class="hero-subtitle">Create high-quality QR codes instantly with our multi-language platform. Fast, reliable, and completely free to use.</p>
+      <h1 class="hero-title">VIN NESIA QR Generator</h1>
+      <p class="hero-subtitle">Create high-quality QR codes instantly with our professional multi-language platform. Fast, reliable, and completely free to use.</p>
+      
+      <div class="stats-section">
+        <div class="stat-card">
+          <div class="stat-number">100K+</div>
+          <div class="stat-label">QR Codes Generated</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Languages Supported</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">99.9%</div>
+          <div class="stat-label">Uptime Guarantee</div>
+        </div>
+      </div>
     </section>
 
     <section class="language-section">
       <div class="language-grid">
-        <div class="language-card" style="--delay: 1;">
+        <div class="language-card">
           <span class="flag-icon">🇺🇸</span>
           <h3 class="language-name">English</h3>
           <p class="language-native">English</p>
-          <a href="/en/qr-code-generator/" class="language-link">Get Started →</a>
+          <a href="https://QR.vinnesia.my.id/en/qr-code-generator/" class="language-link">Get Started →</a>
         </div>
 
-        <div class="language-card" style="--delay: 2;">
+        <div class="language-card">
           <span class="flag-icon">🇮🇩</span>
           <h3 class="language-name">Indonesian</h3>
           <p class="language-native">Bahasa Indonesia</p>
-          <a href="/id/qr-code-generator/" class="language-link">Mulai Sekarang →</a>
+          <a href="https://QR.vinnesia.my.id/id/qr-code-generator/" class="language-link">Mulai Sekarang →</a>
         </div>
 
-        <div class="language-card" style="--delay: 3;">
+        <div class="language-card">
           <span class="flag-icon">🇯🇵</span>
           <h3 class="language-name">Japanese</h3>
           <p class="language-native">日本語</p>
-          <a href="/ja/qr-code-generator/" class="language-link">始める →</a>
+          <a href="https://QR.vinnesia.my.id/ja/qr-code-generator/" class="language-link">始める →</a>
         </div>
 
-        <div class="language-card" style="--delay: 4;">
+        <div class="language-card">
           <span class="flag-icon">🇰🇷</span>
           <h3 class="language-name">Korean</h3>
           <p class="language-native">한국어</p>
-          <a href="/ko/qr-code-generator/" class="language-link">시작하기 →</a>
+          <a href="https://QR.vinnesia.my.id/ko/qr-code-generator/" class="language-link">시작하기 →</a>
         </div>
       </div>
     </section>
@@ -451,90 +486,55 @@
   </main>
 
   <footer>
-    <p>&copy; 2024 QR Generator. Made with ❤️ for the community.</p>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>VIN NESIA</h3>
+        <ul>
+          <li><a href="https://QR.vinnesia.my.id">QR Code Generator</a></li>
+          <li><a href="https://QR.vinnesia.my.id/about">About Us</a></li>
+          <li><a href="https://QR.vinnesia.my.id/contact">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Features</h3>
+        <ul>
+          <li><a href="https://QR.vinnesia.my.id/text-qr">Text QR Code</a></li>
+          <li><a href="https://QR.vinnesia.my.id/url-qr">URL QR Code</a></li>
+          <li><a href="https://QR.vinnesia.my.id/wifi-qr">WiFi QR Code</a></li>
+          <li><a href="https://QR.vinnesia.my.id/vcard-qr">vCard QR Code</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Languages</h3>
+        <ul>
+          <li><a href="https://QR.vinnesia.my.id/en/">🇺🇸 English</a></li>
+          <li><a href="https://QR.vinnesia.my.id/id/">🇮🇩 Bahasa Indonesia</a></li>
+          <li><a href="https://QR.vinnesia.my.id/ja/">🇯🇵 日本語</a></li>
+          <li><a href="https://QR.vinnesia.my.id/ko/">🇰🇷 한국어</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="https://QR.vinnesia.my.id/help">Help Center</a></li>
+          <li><a href="https://QR.vinnesia.my.id/faq">FAQ</a></li>
+          <li><a href="https://QR.vinnesia.my.id/privacy">Privacy Policy</a></li>
+          <li><a href="https://QR.vinnesia.my.id/terms">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 VIN NESIA. All rights reserved.</p>
+      <p>Made with ❤️ in Indonesia | Domain: <a href="https://QR.vinnesia.my.id" style="color: #8b5cf6;">QR.vinnesia.my.id</a></p>
+    </div>
   </footer>
 
   <script>
-    /* ===== JS All-in-One ===== */
-    
-    // Create floating particles
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const particleCount = 50;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Random size and position
-        const size = Math.random() * 4 + 2;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        
-        // Random animation delay
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        
-        particlesContainer.appendChild(particle);
-      }
-    }
-
-    // Dark mode toggle
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      const toggle = document.querySelector('.dark-toggle');
-      toggle.textContent = isDark ? '☀️' : '🌙';
-    }
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Add loading animation
-    window.addEventListener('load', function() {
-      document.body.style.opacity = '0';
-      setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease-in-out';
-        document.body.style.opacity = '1';
-      }, 100);
-    });
-
-    // Initialize particles
-    createParticles();
-
-    // Add intersection observer for animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-        }
-      });
-    }, observerOptions);
-
-    // Observe all language cards
-    document.querySelectorAll('.language-card').forEach(card => {
-      observer.observe(card);
-    });
-
-    console.log("Professional QR Generator Main Page Loaded ✨");
+    console.log("VIN NESIA QR Generator Main Page Loaded ✨");
   </script>
 </body>
 </html>
