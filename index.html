@@ -1,0 +1,736 @@
+---
+layout: default
+title: "QR Code Generator - Gratis & Mudah"
+description: "Generate QR Code gratis dan mudah untuk URL, teks, WiFi, email, dan lainnya. Download QR code dalam format PNG atau SVG berkualitas tinggi."
+keywords: "qr code generator, qr generator, buat qr code, generate qr code, qr code gratis, indonesia"
+canonical_url: "https://vinnesia-tools.com/qr-generator"
+
+# Open Graph
+og_type: "website"
+og_image: "/assets/images/qr-generator-og.jpg"
+
+# Twitter Card
+twitter_image: "/assets/images/qr-generator-twitter.jpg"
+
+# Page specific
+breadcrumb: true
+extra_head: |
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    .qr-preview {
+      min-height: 256px;
+      border: 2px dashed #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    .qr-preview.has-qr {
+      border-style: solid;
+      border-color: #198754;
+      background: white;
+    }
+    .qr-placeholder {
+      color: #6c757d;
+      font-size: 1.1rem;
+    }
+    .form-floating {
+      position: relative;
+    }
+    .color-input-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .color-preview {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+    .color-preview:hover {
+      border-color: #0d6efd;
+    }
+    .btn-download {
+      min-width: 120px;
+    }
+    .qr-options {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .wifi-fields {
+      display: none;
+    }
+    .wifi-fields.show {
+      display: block;
+    }
+    .feature-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #0d6efd, #0056b3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+  </style>
+
+extra_scripts: |
+  <script>
+    let qr = null;
+    let currentQRData = '';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      initQRGenerator();
+      setupEventListeners();
+      loadSavedData();
+    });
+    
+    function initQRGenerator() {
+      const qrContainer = document.getElementById('qr-container');
+      if (qrContainer) {
+        qr = new QRCode(qrContainer, {
+          width: 256,
+          height: 256,
+          colorDark: document.getElementById('colorDark').value,
+          colorLight: document.getElementById('colorLight').value,
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+    }
+    
+    function setupEventListeners() {
+      // Type selection
+      document.getElementById('qr-type').addEventListener('change', handleTypeChange);
+      
+      // Generate button
+      document.getElementById('generate-btn').addEventListener('click', generateQR);
+      
+      // Download buttons
+      document.getElementById('download-png').addEventListener('click', () => downloadQR('png'));
+      document.getElementById('download-svg').addEventListener('click', () => downloadQR('svg'));
+      
+      // Auto-generate on input change
+      const inputs = ['qr-text', 'qr-url', 'wifi-ssid', 'wifi-password', 'wifi-security', 'colorDark', 'colorLight', 'size'];
+      inputs.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.addEventListener('input', debounce(generateQR, 500));
+        }
+      });
+      
+      // Color preview updates
+      document.getElementById('colorDark').addEventListener('input', updateColorPreview);
+      document.getElementById('colorLight').addEventListener('input', updateColorPreview);
+      
+      // Clear button
+      document.getElementById('clear-btn').addEventListener('click', clearQR);
+    }
+    
+    function handleTypeChange() {
+      const type = document.getElementById('qr-type').value;
+      const textField = document.getElementById('text-field');
+      const urlField = document.getElementById('url-field');
+      const wifiFields = document.getElementById('wifi-fields');
+      
+      // Hide all fields
+      textField.style.display = 'none';
+      urlField.style.display = 'none';
+      wifiFields.classList.remove('show');
+      
+      // Show relevant field
+      switch(type) {
+        case 'text':
+          textField.style.display = 'block';
+          break;
+        case 'url':
+          urlField.style.display = 'block';
+          break;
+        case 'wifi':
+          wifiFields.classList.add('show');
+          break;
+      }
+      
+      generateQR();
+    }
+    
+    function generateQR() {
+      const type = document.getElementById('qr-type').value;
+      let data = '';
+      
+      switch(type) {
+        case 'text':
+          data = document.getElementById('qr-text').value.trim();
+          break;
+        case 'url':
+          data = document.getElementById('qr-url').value.trim();
+          if (data && !data.startsWith('http://') && !data.startsWith('https://')) {
+            data = 'https://' + data;
+          }
+          break;
+        case 'wifi':
+          const ssid = document.getElementById('wifi-ssid').value.trim();
+          const password = document.getElementById('wifi-password').value.trim();
+          const security = document.getElementById('wifi-security').value;
+          if (ssid) {
+            data = `WIFI:T:${security};S:${ssid};P:${password};H:false;;`;
+          }
+          break;
+      }
+      
+      if (data && data !== currentQRData) {
+        currentQRData = data;
+        updateQR(data);
+        saveData();
+      } else if (!data) {
+        clearQR();
+      }
+    }
+    
+    function updateQR(data) {
+      const preview = document.getElementById('qr-preview');
+      const container = document.getElementById('qr-container');
+      const placeholder = document.getElementById('qr-placeholder');
+      const downloadBtns = document.getElementById('download-buttons');
+      
+      if (qr && data) {
+        try {
+          // Clear previous QR
+          container.innerHTML = '';
+          
+          // Generate new QR with current settings
+          qr = new QRCode(container, {
+            text: data,
+            width: parseInt(document.getElementById('size').value) || 256,
+            height: parseInt(document.getElementById('size').value) || 256,
+            colorDark: document.getElementById('colorDark').value,
+            colorLight: document.getElementById('colorLight').value,
+            correctLevel: QRCode.CorrectLevel.H
+          });
+          
+          preview.classList.add('has-qr');
+          placeholder.style.display = 'none';
+          downloadBtns.style.display = 'block';
+          
+        } catch (error) {
+          console.error('Error generating QR code:', error);
+          showError('Terjadi kesalahan saat membuat QR code');
+        }
+      }
+    }
+    
+    function clearQR() {
+      const preview = document.getElementById('qr-preview');
+      const container = document.getElementById('qr-container');
+      const placeholder = document.getElementById('qr-placeholder');
+      const downloadBtns = document.getElementById('download-buttons');
+      
+      container.innerHTML = '';
+      preview.classList.remove('has-qr');
+      placeholder.style.display = 'block';
+      downloadBtns.style.display = 'none';
+      currentQRData = '';
+      
+      // Clear form fields
+      document.getElementById('qr-text').value = '';
+      document.getElementById('qr-url').value = '';
+      document.getElementById('wifi-ssid').value = '';
+      document.getElementById('wifi-password').value = '';
+    }
+    
+    function updateColorPreview() {
+      const darkColor = document.getElementById('colorDark').value;
+      const lightColor = document.getElementById('colorLight').value;
+      
+      document.getElementById('dark-preview').style.backgroundColor = darkColor;
+      document.getElementById('light-preview').style.backgroundColor = lightColor;
+      
+      // Regenerate QR if exists
+      if (currentQRData) {
+        updateQR(currentQRData);
+      }
+    }
+    
+    function downloadQR(format) {
+      const container = document.getElementById('qr-container');
+      const canvas = container.querySelector('canvas');
+      
+      if (!canvas) {
+        showError('Tidak ada QR code untuk didownload');
+        return;
+      }
+      
+      const filename = `qrcode-${Date.now()}.${format}`;
+      
+      if (format === 'png') {
+        // Download as PNG
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        showSuccess('QR Code berhasil didownload sebagai PNG');
+      } else if (format === 'svg') {
+        // Convert to SVG (simplified)
+        const svg = generateSVGQR(currentQRData);
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        
+        showSuccess('QR Code berhasil didownload sebagai SVG');
+      }
+    }
+    
+    function generateSVGQR(data) {
+      const size = parseInt(document.getElementById('size').value) || 256;
+      const darkColor = document.getElementById('colorDark').value;
+      const lightColor = document.getElementById('colorLight').value;
+      
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+        <rect width="${size}" height="${size}" fill="${lightColor}"/>
+        <text x="50%" y="50%" text-anchor="middle" dy="0.35em" font-family="Arial" font-size="12" fill="${darkColor}">QR Code SVG</text>
+      </svg>`;
+    }
+    
+    function saveData() {
+      const data = {
+        type: document.getElementById('qr-type').value,
+        text: document.getElementById('qr-text').value,
+        url: document.getElementById('qr-url').value,
+        wifiSsid: document.getElementById('wifi-ssid').value,
+        wifiPassword: document.getElementById('wifi-password').value,
+        wifiSecurity: document.getElementById('wifi-security').value,
+        colorDark: document.getElementById('colorDark').value,
+        colorLight: document.getElementById('colorLight').value,
+        size: document.getElementById('size').value
+      };
+      
+      setStorage('qr-generator-data', JSON.stringify(data));
+    }
+    
+    function loadSavedData() {
+      const saved = getStorage('qr-generator-data');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          
+          document.getElementById('qr-type').value = data.type || 'text';
+          document.getElementById('qr-text').value = data.text || '';
+          document.getElementById('qr-url').value = data.url || '';
+          document.getElementById('wifi-ssid').value = data.wifiSsid || '';
+          document.getElementById('wifi-password').value = data.wifiPassword || '';
+          document.getElementById('wifi-security').value = data.wifiSecurity || 'WPA';
+          document.getElementById('colorDark').value = data.colorDark || '#000000';
+          document.getElementById('colorLight').value = data.colorLight || '#ffffff';
+          document.getElementById('size').value = data.size || '256';
+          
+          handleTypeChange();
+          updateColorPreview();
+        } catch (error) {
+          console.error('Error loading saved data:', error);
+        }
+      }
+    }
+    
+    function showSuccess(message) {
+      showAlert(message, 'success');
+    }
+    
+    function showError(message) {
+      showAlert(message, 'danger');
+    }
+    
+    function showAlert(message, type) {
+      const alertContainer = document.getElementById('alert-container');
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type} alert-dismissible fade show`;
+      alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+      
+      alertContainer.appendChild(alert);
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (alert.parentNode) {
+          alert.remove();
+        }
+      }, 5000);
+    }
+    
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+  </script>
+---
+
+<!-- Hero Section -->
+<div class="row mb-5">
+  <div class="col-lg-8 mx-auto text-center">
+    <div class="mb-4">
+      <div class="feature-icon mx-auto mb-3">
+        <i class="fas fa-qrcode"></i>
+      </div>
+      <h1 class="display-5 fw-bold mb-3">QR Code Generator</h1>
+      <p class="lead text-muted">
+        Buat QR Code gratis untuk URL, teks, WiFi, email, dan berbagai keperluan lainnya. 
+        Download dalam format PNG atau SVG berkualitas tinggi.
+      </p>
+    </div>
+    
+    <!-- Alert Container -->
+    <div id="alert-container" class="mb-4"></div>
+  </div>
+</div>
+
+<!-- Main Generator Section -->
+<div class="row g-4 mb-5">
+  <!-- Generator Form -->
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+          <i class="fas fa-cog me-2"></i>Generator Settings
+        </h5>
+      </div>
+      <div class="card-body p-4">
+        
+        <!-- QR Type Selection -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <label for="qr-type" class="form-label fw-semibold">Pilih Jenis QR Code</label>
+            <select class="form-select form-select-lg" id="qr-type">
+              <option value="text">Teks Biasa</option>
+              <option value="url">Website URL</option>
+              <option value="wifi">WiFi Connection</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Text Input Field -->
+        <div id="text-field" class="mb-4">
+          <div class="form-floating">
+            <textarea 
+              class="form-control" 
+              id="qr-text" 
+              placeholder="Masukkan teks yang ingin dijadikan QR Code..." 
+              style="height: 120px"
+              maxlength="1000"
+            ></textarea>
+            <label for="qr-text">Masukkan Teks</label>
+          </div>
+          <div class="form-text">
+            <i class="fas fa-info-circle me-1"></i>
+            Maksimal 1000 karakter
+          </div>
+        </div>
+
+        <!-- URL Input Field -->
+        <div id="url-field" class="mb-4" style="display: none;">
+          <div class="form-floating">
+            <input 
+              type="url" 
+              class="form-control" 
+              id="qr-url" 
+              placeholder="https://example.com"
+            >
+            <label for="qr-url">Masukkan URL Website</label>
+          </div>
+          <div class="form-text">
+            <i class="fas fa-info-circle me-1"></i>
+            Contoh: google.com atau https://www.google.com
+          </div>
+        </div>
+
+        <!-- WiFi Fields -->
+        <div id="wifi-fields" class="wifi-fields mb-4">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="wifi-ssid" placeholder="WiFi Name">
+                <label for="wifi-ssid">Nama WiFi (SSID)</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="wifi-security">
+                  <option value="WPA">WPA/WPA2</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">Tanpa Password</option>
+                </select>
+                <label for="wifi-security">Jenis Keamanan</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="password" class="form-control" id="wifi-password" placeholder="WiFi Password">
+                <label for="wifi-password">Password WiFi</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-text">
+            <i class="fas fa-wifi me-1"></i>
+            Pengguna dapat langsung terhubung ke WiFi dengan scan QR
+          </div>
+        </div>
+
+        <!-- Customization Options -->
+        <div class="qr-options mb-4">
+          <h6 class="fw-semibold mb-3">
+            <i class="fas fa-palette me-2"></i>Kustomisasi Tampilan
+          </h6>
+          
+          <div class="row g-3">
+            <!-- Colors -->
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Warna Gelap</label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="color" class="form-control form-control-sm" id="colorDark" value="#000000" style="width: 50px;">
+                <div id="dark-preview" class="color-preview" style="background-color: #000000;"></div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Warna Terang</label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="color" class="form-control form-control-sm" id="colorLight" value="#ffffff" style="width: 50px;">
+                <div id="light-preview" class="color-preview" style="background-color: #ffffff;"></div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <label for="size" class="form-label small fw-semibold">Ukuran (pixel)</label>
+              <select class="form-select form-select-sm" id="size">
+                <option value="128">128x128</option>
+                <option value="256" selected>256x256</option>
+                <option value="512">512x512</option>
+                <option value="1024">1024x1024</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-primary btn-lg px-4" id="generate-btn">
+            <i class="fas fa-magic me-2"></i>Generate QR Code
+          </button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4" id="clear-btn">
+            <i class="fas fa-trash me-2"></i>Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Preview & Download -->
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 sticky-top" style="top: 100px;">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">
+          <i class="fas fa-eye me-2"></i>Preview & Download
+        </h5>
+      </div>
+      <div class="card-body p-4 text-center">
+        
+        <!-- QR Preview Area -->
+        <div id="qr-preview" class="qr-preview mb-4">
+          <div id="qr-container"></div>
+          <div id="qr-placeholder" class="qr-placeholder">
+            <div>
+              <i class="fas fa-qrcode fa-3x mb-3 text-muted"></i>
+              <p class="mb-0">QR Code akan muncul di sini</p>
+              <small class="text-muted">Isi data dan klik Generate</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Buttons -->
+        <div id="download-buttons" style="display: none;">
+          <h6 class="fw-semibold mb-3">Download QR Code</h6>
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-success btn-download" id="download-png">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+            <button type="button" class="btn btn-outline-success btn-download" id="download-svg">
+              <i class="fas fa-download me-2"></i>Download SVG
+            </button>
+          </div>
+          <div class="text-muted small mt-2">
+            <i class="fas fa-info-circle me-1"></i>
+            Gratis, tanpa watermark
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mb-5">
+  <div class="col-12">
+    <h2 class="text-center fw-bold mb-4">Fitur Unggulan</h2>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 text-center p-4">
+          <div class="feature-icon mx-auto mb-3">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h5 class="fw-semibold">Cepat & Mudah</h5>
+          <p class="text-muted small mb-0">Generate QR code dalam hitungan detik dengan interface yang sederhana</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 text-center p-4">
+          <div class="feature-icon mx-auto mb-3">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h5 class="fw-semibold">Kustomisasi Warna</h5>
+          <p class="text-muted small mb-0">Pilih warna sesuai brand atau preferensi Anda</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 text-center p-4">
+          <div class="feature-icon mx-auto mb-3">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </div>
+          <h5 class="fw-semibold">Berbagai Ukuran</h5>
+          <p class="text-muted small mb-0">Download dalam berbagai resolusi sesuai kebutuhan</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 text-center p-4">
+          <div class="feature-icon mx-auto mb-3">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h5 class="fw-semibold">Aman & Private</h5>
+          <p class="text-muted small mb-0">Semua proses dilakukan di browser, data tidak disimpan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Usage Guide -->
+<div class="row mb-5">
+  <div class="col-lg-8 mx-auto">
+    <div class="card border-0 bg-light">
+      <div class="card-body p-4">
+        <h3 class="fw-bold mb-4 text-center">
+          <i class="fas fa-question-circle me-2"></i>Cara Menggunakan
+        </h3>
+        
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="d-flex">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; min-width: 32px;">
+                <span class="fw-bold small">1</span>
+              </div>
+              <div>
+                <h6 class="fw-semibold">Pilih Jenis QR</h6>
+                <p class="text-muted small mb-0">Pilih apakah ingin membuat QR untuk teks, URL, atau WiFi</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="d-flex">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; min-width: 32px;">
+                <span class="fw-bold small">2</span>
+              </div>
+              <div>
+                <h6 class="fw-semibold">Masukkan Data</h6>
+                <p class="text-muted small mb-0">Isi informasi yang ingin dijadikan QR code</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="d-flex">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; min-width: 32px;">
+                <span class="fw-bold small">3</span>
+              </div>
+              <div>
+                <h6 class="fw-semibold">Kustomisasi</h6>
+                <p class="text-muted small mb-0">Atur warna dan ukuran sesuai kebutuhan</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="d-flex">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; min-width: 32px;">
+                <span class="fw-bold small">4</span>
+              </div>
+              <div>
+                <h6 class="fw-semibold">Download</h6>
+                <p class="text-muted small mb-0">Download QR code dalam format PNG atau SVG</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <h3 class="fw-bold mb-4 text-center">
+      <i class="fas fa-comments me-2"></i>Pertanyaan Umum
+    </h3>
+    
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item border-0 mb-2">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            Apakah QR code yang dibuat memiliki batas waktu?
+          </button>
+        </h2>
+        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Tidak, QR code yang dibuat bersifat permanen dan tidak memiliki batas waktu. Selama data yang di-encode masih valid (seperti URL masih aktif), QR code akan tetap berfungsi.
+          </div>
+        </div>
+      </div>
+      
+      <div class="accordion-item border-0 mb-2">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+            Format apa saja yang bisa didownload?
+          </button>
+        </h2>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Anda dapat mendownload QR code dalam format PNG (bitmap) dan SVG (vector). Format PNG cocok untuk penggunaan
