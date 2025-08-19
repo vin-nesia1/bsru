@@ -149,17 +149,20 @@
 
     .language-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
       margin: 3rem 0;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .language-card {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 2.5rem 2rem;
+      border-radius: 15px;
+      padding: 1.5rem 1rem;
       text-align: center;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: var(--shadow);
@@ -190,8 +193,8 @@
     }
 
     .flag-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
       display: block;
       animation: bounce 2s infinite;
     }
@@ -203,26 +206,27 @@
     }
 
     .language-name {
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text-dark);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     .language-native {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       color: var(--text-light);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .language-link {
       display: inline-block;
       text-decoration: none;
-      padding: 1rem 2rem;
+      padding: 0.75rem 1.25rem;
       background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
       color: white;
-      border-radius: 50px;
+      border-radius: 25px;
       font-weight: 600;
+      font-size: 0.9rem;
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
       position: relative;
@@ -316,16 +320,23 @@
       }
       
       .language-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
       
       .language-card {
-        padding: 2rem 1.5rem;
+        padding: 1.25rem 0.75rem;
       }
       
       main {
         padding: 0 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .language-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
       }
     }
 
